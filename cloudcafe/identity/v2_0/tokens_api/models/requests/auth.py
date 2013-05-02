@@ -64,9 +64,10 @@ class Token(BaseIdentityModel):
 
     ROOT_TAG = 'token'
 
-    def __init__(self, id=None):
+    def __init__(self, id=None, expires=None):
         super(Token, self).__init__()
         self.id = id
+        self.expires = expires
 
     def _obj_to_dict(self):
         ret = {}

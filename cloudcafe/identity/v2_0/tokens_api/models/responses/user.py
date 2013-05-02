@@ -60,7 +60,8 @@ class User(BaseIdentityModel):
                  password=None, roles=None, name=None, display_name=None):
         '''An object that represents an users response object.
         Keyword arguments:
-        '''
+        Note that roles_links attribute is missing for User.
+        We're assuming that it might be related to roles attribute'''
         super(User, self).__init__()
         self.id = id
         self.enabled = enabled
