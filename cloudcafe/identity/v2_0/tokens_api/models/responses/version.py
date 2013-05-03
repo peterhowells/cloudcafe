@@ -96,7 +96,10 @@ class Link(BaseIdentityModel):
     def _dict_to_obj(cls, link_dict):
         link = Link()
         link.href = link_dict.get('href')
-        link.type = link_dict.get('type')
         link.rel = link_dict.get('rel')
+
+        # Some links have a type, others dont
+        if link_dict['type']:
+            link.type = link_dict.get('type')
         
         return link
