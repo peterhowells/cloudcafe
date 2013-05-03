@@ -24,13 +24,29 @@ class Version(BaseIdentityModel):
 
     TAG = 'version'
 
-    def __init__(self, status=None, updated=None, media_types=None, 
-                 id=None, links=None):
-        self.status = status
-        self.updated = updated
-        self.media_types = media_types
-        self.id = id
+    def __init__(self):
+        self.status = None
+        self.updated = None
+        self.media_types = MediaTypes()
+        self.id = None
+        self.links = Links()
 
+    @classmethod
+    def _json_to_obj(cls, serialized_str):
+        json_dict = json.loads(serialized_str)
+        return cls._dict_to_obj(json_dict.get(cls.TAG))
+
+    @classmethod
+    def _dict_to_obj(cls, version_dict):
+        version = Version()
+        version.status = version_dict.get('status')
+        version.updated = version_dict.get('updated')
+        version.media_types = MediaTypes._list_to_obj(
+            version_dict.get(MediaTypes.TAG))
+        version.id = version_dict.get('id')
+        version.links = Links._list_to_obj(version_dict.get(Links.TAG))
+
+        return version
 
 class MediaTypes(BaseIdentityListModel):
 
