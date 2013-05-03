@@ -39,11 +39,19 @@ class MediaTypes(BaseIdentityListModel):
     def __init__(self, media_types=None):
         '''
         An Object that models a list of mediaTypes
-        @param media_types List of mediaType
+        @param media_types List object of mediaType
         '''
         super(MediaTypes, self).__init__()
         self.extend(media_types)
 
+    @classmethod
+    def _list_to_obj(self, media_type_dict_list):
+        media_types = MediaTypes()
+        for media_type_dict in media_type_dict_list:
+            media_type = MediaType._dict_to_obj(media_type_dict)
+            media_types.append(media_type)
+
+        return media_types
 
 class MediaType(BaseIdentityModel):
 
