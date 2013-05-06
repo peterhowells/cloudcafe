@@ -74,14 +74,17 @@ class MediaType(BaseIdentityModel):
     TAG = 'mediaType'
 
     def __init__(self):
+        '''
+        An Object that models a MediaType returned by the keystone api
+        '''
         self.base = None
         self.type = None
 
     @classmethod
-    def _dict_to_obj(cls, media_type_dic):
+    def _dict_to_obj(cls, media_type_dict):
         media_type = MediaType()
-        media_type.base = media_type_dic.get('base')
-        media_type.type = media_type_dic.get('type')
+        media_type.base = media_type_dict.get('base')
+        media_type.type = media_type_dict.get('type')
         
         return media_type
 
@@ -113,6 +116,9 @@ class Link(BaseIdentityModel):
     TAG = 'link'
 
     def __init__(self):
+        '''
+        An object that models a Link returned by the keystone api
+        '''
         self.href = None
         self.type = None
         self.rel = None
