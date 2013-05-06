@@ -17,6 +17,8 @@ limitations under the License.
 from cafe.engine.clients.rest import AutoMarshallingRestClient
 from cloudcafe.identity.v2_0.tenants_api.models.responses.tenant import \
     Tenants, Tenant
+from cloudcafe.identity.v2_0.tenants_api.models.responses.roles import \
+    Roels, Role
 from cloudcafe.identity.v2_0.users_api.models.responses.users import \
     Users, User
 
