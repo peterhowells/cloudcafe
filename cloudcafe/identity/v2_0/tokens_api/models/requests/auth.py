@@ -24,7 +24,7 @@ from cloudcafe.identity.v2_0.tokens_api.models.requests.credentials import \
 
 class Auth(BaseIdentityModel):
 
-    ROOT_TAG = 'auth'
+    TAG = 'auth'
 
     def __init__(self, credentials=None, tenant_name=None, token=None):
         self.passwordCredentials = credentials
@@ -34,13 +34,13 @@ class Auth(BaseIdentityModel):
     def _obj_to_json(self):
         ret = {}
         if self.passwordCredentials is not None:
-            ret[PasswordCredentials.ROOT_TAG] = \
+            ret[PasswordCredentials.TAG] = \
                 self.passwordCredentials._obj_to_dict()
         if self.token is not None:
-            ret[Token.ROOT_TAG] = self.token._obj_to_dict()
+            ret[Token.TAG] = self.token._obj_to_dict()
         if self.tenant_name is not None:
             ret['tenantName'] = self.tenant_name
-        ret = {self.ROOT_TAG: ret}
+        ret = {self.TAG: ret}
         return json.dumps(ret)
 
     def _obj_to_xml(self):
@@ -50,7 +50,7 @@ class Auth(BaseIdentityModel):
         return ElementTree.tostring(ele)
 
     def _obj_to_xml_ele(self):
-        element = ElementTree.Element(self.ROOT_TAG)
+        element = ElementTree.Element(self.TAG)
         if self.passwordCredentials is not None:
             element.append(self.passwordCredentials._obj_to_xml_ele())
         if self.token is not None:
@@ -62,7 +62,7 @@ class Auth(BaseIdentityModel):
 
 class Token(BaseIdentityModel):
 
-    ROOT_TAG = 'token'
+    TAG = 'token'
 
     def __init__(self, id=None):
         super(Token, self).__init__()
@@ -78,7 +78,7 @@ class Token(BaseIdentityModel):
         return ElementTree.tostring(self._obj_to_xml_ele())
 
     def _obj_to_xml_ele(self):
-        element = ElementTree.Element(self.ROOT_TAG)
+        element = ElementTree.Element(self.TAG)
         if self.id is not None:
             element.set('id', self.id)
         return element
