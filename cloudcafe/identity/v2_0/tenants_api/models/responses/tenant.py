@@ -101,7 +101,7 @@ class Tenant(BaseIdentityModel):
             kwargs['enabled'] = json.loads(xml_ele.get('enabled').lower())
         return Tenant(**kwargs)
 
-# needs to be finished once i can find what this onject looks like
+# needs to be finished once i can find what this object looks like
 class TenantsLinks(BaseIdentityListModel):
 
     TAG = 'tenantslinks'
