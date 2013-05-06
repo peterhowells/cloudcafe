@@ -48,6 +48,7 @@ class Version(BaseIdentityModel):
 
         return version
 
+
 class MediaTypes(BaseIdentityListModel):
 
     TAG = 'mediaTypes'
@@ -68,6 +69,7 @@ class MediaTypes(BaseIdentityListModel):
             media_types.append(media_type)
 
         return media_types
+
 
 class MediaType(BaseIdentityModel):
 
@@ -110,6 +112,7 @@ class Links(BaseIdentityListModel):
             links.append(link)
 
         return links
+
 
 class Link(BaseIdentityModel):
 

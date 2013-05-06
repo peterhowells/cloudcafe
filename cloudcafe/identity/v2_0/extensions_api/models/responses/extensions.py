@@ -18,6 +18,7 @@ import json
 from cloudcafe.identity.v2_0.shared.base import \
     BaseIdentityModel, BaseIdentityListModel
 
+
 class Extensions(BaseIdentityModel):
 
     TAG = 'extensions'
@@ -40,6 +41,7 @@ class Extensions(BaseIdentityModel):
             json_dict.get(Values.TAG))
 
         return extensions
+
 
 class Values(BaseIdentityListModel):
 
@@ -87,6 +89,7 @@ class Value(BaseIdentityModel):
         value.description = json_dict.get('description')
         value.links = Links._list_to_obj(json_dict.get(Links.TAG))
 
+
 class Links(BaseIdentityListModel):
 
     TAG = 'links'
@@ -106,6 +109,7 @@ class Links(BaseIdentityListModel):
             links.append(link)
 
         return links
+
 
 class Link(BaseIdentityModel):
 
