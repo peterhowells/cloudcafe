@@ -61,7 +61,7 @@ class Role(BaseIdentityModel):
     ROOT_TAG = 'role'
 
     def __init__(self, id=None, name=None, description=None, serviceId=None,
-                 tenantId=None, propagate = None, weight = None):
+                 tenantId=None, propagate=None, weight=None):
         super(Role, self).__init__()
         self.id = id
         self.name = name
