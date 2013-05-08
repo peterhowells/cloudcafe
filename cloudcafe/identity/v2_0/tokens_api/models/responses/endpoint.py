@@ -115,7 +115,7 @@ class Endpoint(BaseIdentityModel):
 
 class Version(BaseIdentityModel):
 
-    def __init__(self, id=None, info=None, list=None):
-        self.id = id
+    def __init__(self, id_=None, info=None, list_=None):
+        self.id = id_
         self.info = info
-        self.list = list
+        self.list = list_
