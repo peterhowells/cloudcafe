@@ -23,8 +23,8 @@ _version = 'v2.0'
 
 class ExtensionAPI_Client(AutoMarshallingRestClient):
 
-    def __init__(self, url, serialize_format, deserialize_format=None,
-                 auth_token=None):
+    def __init__(self, url, auth_token, 
+                 serialize_format=None, deserialize_format=None):
         """
         @param url: Base URL for the compute service
         @type url: String
