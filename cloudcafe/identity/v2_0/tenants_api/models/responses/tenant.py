@@ -126,9 +126,9 @@ class TenantsLink(BaseIdentityModel):
         self.rel = rel
 
     def _dict_to_obj(cls, tenant_dict):
-        tenantlink = TenantsLink(href=tenant_dict.get('href'),
-                                 type_=tenant_dict.get('type'),
-                                 rel=tenant_dict.get('rel'))
+        tenantlink = TenantsLink(href = tenant_dict.get('href'),
+                                 type_ = tenant_dict.get('type'),
+                                 rel = tenant_dict.get('rel'))
 
         return tenantlink
 
