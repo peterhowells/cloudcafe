@@ -22,8 +22,6 @@ from cloudcafe.identity.v2_0.shared.base import \
 
 class Roles(BaseIdentityListModel):
 
-    TAG = 'roles'
-
     def __init__(self, roles=None):
         '''
         Models a roles list returned by keystone
@@ -43,19 +41,16 @@ class Roles(BaseIdentityListModel):
 
 class Role(BaseIdentityModel):
 
-    TAG = 'role'
-
-    def __init__(self):
+    def __init__(self, id_=None, name=None):
         '''
         Models a role returned by keystone
         '''
-        self.id = None
-        self.name = None
+        self.id_ = id_
+        self.name = name
 
     @classmethod
     def _dict_to_obj(cls, json_dict):
-        role = Role()
-        role.id = json_dict.get('id')
-        role.name = json_dict.get('name')
+        role = Role(role.id = json_dict.get('id'),
+                    role.name = json_dict.get('name'))
 
         return role

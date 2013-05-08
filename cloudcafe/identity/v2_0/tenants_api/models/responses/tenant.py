@@ -22,8 +22,6 @@ from cloudcafe.identity.v2_0.tokens_api.models.base import \
 
 class Tenants(BaseIdentityListModel):
 
-    TAG = 'tenants'
-
     def __init__(self, tenants=None):
         '''An object that represents an tenants response object.
         '''
@@ -33,39 +31,36 @@ class Tenants(BaseIdentityListModel):
     @classmethod
     def _json_to_obj(cls, serialized_str):
         json_dict = json.loads(serialized_str)
-        return cls._list_to_obj(json_dict.get(cls.TAG))
+        return cls._list_to_obj(json_dict.get('tenants'))
 
     @classmethod
     def _list_to_obj(cls, list_):
-        ret = {cls.TAG: [Tenant(**tenant) for tenant in list_]}
+        ret = {'tenants': [Tenant(**tenant) for tenant in list_]}
         return Tenants(**ret)
 
     @classmethod
     def _xml_to_obj(cls, serialized_str):
         element = ElementTree.fromstring(serialized_str)
         cls._remove_identity_xml_namespaces(element)
-        if element.tag != cls.TAG:
+        if element.tag != 'tenants':
             return None
-        return cls._xml_list_to_obj(element.findall(Tenant.TAG))
+        return cls._xml_list_to_obj(element.findall('tenant'))
 
     @classmethod
     def _xml_list_to_obj(cls, xml_list):
-        kwargs = {cls.TAG: [Tenant._xml_ele_to_obj(ele)
+        kwargs = {'tenants': [Tenant._xml_ele_to_obj(ele)
                                  for ele in xml_list]}
         return Tenants(**kwargs)
 
 
 class Tenant(BaseIdentityModel):
 
-    TAG = 'tenant'
-
-    def __init__(self, id=None, name=None, description=None, enabled=None,
-                 created=None):
+    def __init__(self, id_=None, name=None, description=None, 
+                 enabled=None, created=None):
         '''
         An object that represents an tenants response object.
         '''
-        super(Tenant, self).__init__()
-        self.id = id
+        self.id_ = id_
         self.name = name
         self.description = description
         self.enabled = enabled
@@ -74,7 +69,7 @@ class Tenant(BaseIdentityModel):
     @classmethod
     def _json_to_obj(cls, serialized_str):
         json_dict = json.loads(serialized_str)
-        return cls._dict_to_obj(json_dict.get(cls.TAG))
+        return cls._dict_to_obj(json_dict.get('tenant'))
 
     @classmethod
     def _dict_to_obj(cls, dic):
@@ -84,7 +79,7 @@ class Tenant(BaseIdentityModel):
     def _xml_to_obj(cls, serialized_str):
         element = ElementTree.fromstring(serialized_str)
         cls._remove_identity_xml_namespaces(element)
-        if element.tag != cls.TAG:
+        if element.tag != 'tenant':
             return None
         return cls._xml_ele_to_obj(element)
 
@@ -101,21 +96,42 @@ class Tenant(BaseIdentityModel):
             kwargs['enabled'] = json.loads(xml_ele.get('enabled').lower())
         return Tenant(**kwargs)
 
-# needs to be finished once i can find what this object looks like
+# needs to be finished once I can find what this object looks like,
+# class and methods are place holders for what I think it looks like.
+# jwagner
 class TenantsLinks(BaseIdentityListModel):
-
-    TAG = 'tenantslinks'
 
     def __init__(self, tenantlink=None):
         super(TenantsLinks, self).__init__()
         self.extend(tenantlink)
 
+    def _list_to_obj(cls, tenantlinks_list_dict):
+        tenantlinks = TenantsLinks()
+        for tenantlink_dict in tenantlinks_list_dict:
+            tenantlink = TenantsLink._dict_to_obj(tenantlink_dict)
+            tenantlinks.append(tenantlink)
+
+        return tenantlinks
+
+    def _json_to_obj(cls, serialized_str):
+        json_dict = json.loads(serialized_str)
+        return cls._dict_to_obj(json_dict)
+
 
 class TenantsLink(BaseIdentityModel):
 
-    TAG = 'tenantslink'
+    def __init__(self, href=None, type_=None, rel=None):
+        self.href = href
+        self.type = type_
+        self.rel = rel
 
-    def __init__(self):
-        self.href = None
-        self.type = None
-        self.rel = None
+    def _dict_to_obj(cls, tenant_dict):
+        tenantlink = TenantsLink(href=tenant_dict.get('href'),
+                                 type_=tenant_dict.get('type'),
+                                 rel=tenant_dict.get('rel'))
+
+        return tenantlink
+
+    def _json_to_obj(cls, serialized_str):
+        json_dict = json.loads(serialized_str)
+        return cls._dict_to_obj(json_dict)
