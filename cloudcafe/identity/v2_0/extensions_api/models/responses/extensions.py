@@ -21,13 +21,11 @@ from cloudcafe.identity.v2_0.shared.base import \
 
 class Extensions(BaseIdentityModel):
 
-    TAG = 'extensions'
-
-    def __init__(self):
+    def __init__(self, values=None):
         '''
         Models a extensions object returned by keystone
         '''
-        self.values = Values()
+        self.values = values
 
     @classmethod
     def _json_to_obj(cls, serialized_str):
@@ -44,8 +42,6 @@ class Extensions(BaseIdentityModel):
 
 
 class Values(BaseIdentityListModel):
-
-    TAG = 'values'
 
     def __init__(self, values=None):
         '''
@@ -66,33 +62,31 @@ class Values(BaseIdentityListModel):
 
 class Value(BaseIdentityModel):
 
-    TAG = 'value'
-
-    def __init__(self):
+    def __init__(self, updated=None, name=None, links=None, namespace=None,
+                 alias=None, description=None):
         '''
-        Models a value  object returned by keystone
+        Models a value object returned by keystone
         '''
-        self.updated = None
-        self.name = None
-        self.links = Links()
-        self.namespace = None
-        self.alias = None
-        self.description = None
+        self.updated = updated
+        self.name = name
+        self.links = links
+        self.namespace = namespace
+        self.alias = alias
+        self.description = description
 
     @classmethod
     def _dict_to_obj(cls, json_dict):
-        value = Value()
-        value.updated = json_dict.get('updated')
-        value.name = json_dict.get('name')
-        value.namespace = json_dict.get('namespace')
-        value.alias = json_dict.get('alias')
-        value.description = json_dict.get('description')
-        value.links = Links._list_to_obj(json_dict.get(Links.TAG))
+        value = Value(updated = json_dict.get('updated'), 
+                      name = json_dict.get('name'), 
+                      namespace = json_dict.get('namespace'), 
+                      alias = json_dict.get('alias'), 
+                      description = json_dict.get('description'), 
+                      links = Links._list_to_obj(json_dict.get('links'))
+
+        return value
 
 
 class Links(BaseIdentityListModel):
-
-    TAG = 'links'
 
     def __init__(self, links=None):
         '''
@@ -113,21 +107,18 @@ class Links(BaseIdentityListModel):
 
 class Link(BaseIdentityModel):
 
-    TAG = 'link'
-
-    def __init__(self):
+    def __init__(self, href=None, type_=None, rel=None):
         '''
         Models a link object returned by keystone
         '''
-        self.href = None
-        self.type = None
-        self.rel = None
+        self.href = href
+        self.type_ = type_
+        self.rel = rel
 
     @classmethod
     def _dict_to_obj(cls, json_dict):
-        link = Link()
-        link.href = json_dict.get('href')
-        link.type = json_dict.get('type')
-        link.rel = json_dict.get('rel')
+        link = Link(href=json_dict.get('href'), 
+                    type_=json_dict.get('type'), 
+                    rel=json_dict.get('rel'))
 
         return link
