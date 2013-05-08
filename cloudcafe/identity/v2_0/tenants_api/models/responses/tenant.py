@@ -20,69 +20,71 @@ from cloudcafe.identity.v2_0.tokens_api.models.base import \
     BaseIdentityModel, BaseIdentityListModel
 
 
-class Roles(BaseIdentityListModel):
+class Tenants(BaseIdentityListModel):
 
-    ROOT_TAG = 'roles'
+    TAG = 'tenants'
 
-    def __init__(self, roles=None):
-        '''An object that represents an users response object.
-        Keyword arguments:
+    def __init__(self, tenants=None):
+        '''An object that represents an tenants response object.
         '''
-        super(Roles, self).__init__()
-        self.extend(roles)
+        super(Tenants, self).__init__()
+        self.extend(tenants)
 
     @classmethod
     def _json_to_obj(cls, serialized_str):
         json_dict = json.loads(serialized_str)
-        return cls._list_to_obj(json_dict.get(cls.ROOT_TAG))
+        return cls._list_to_obj(json_dict.get(cls.TAG))
 
     @classmethod
     def _list_to_obj(cls, list_):
-        ret = {cls.ROOT_TAG: [Role(**role) for role in list_]}
-        return Roles(**ret)
+        ret = {cls.TAG: [Tenant(**tenant) for tenant in list_]}
+        return Tenants(**ret)
 
     @classmethod
     def _xml_to_obj(cls, serialized_str):
         element = ElementTree.fromstring(serialized_str)
         cls._remove_identity_xml_namespaces(element)
-        if element.tag != cls.ROOT_TAG:
+        if element.tag != cls.TAG:
             return None
-        return cls._xml_list_to_obj(element.findall(Role.ROOT_TAG))
+        return cls._xml_list_to_obj(element.findall(Tenant.TAG))
 
     @classmethod
     def _xml_list_to_obj(cls, xml_list):
-        kwargs = {cls.ROOT_TAG: [Role._xml_ele_to_obj(role)
-                                 for role in xml_list]}
-        return Roles(**kwargs)
+        kwargs = {cls.TAG: [Tenant._xml_ele_to_obj(ele)
+                                 for ele in xml_list]}
+        return Tenants(**kwargs)
 
 
-class Role(BaseIdentityModel):
+class Tenant(BaseIdentityModel):
 
-    ROOT_TAG = 'role'
+    TAG = 'tenant'
 
-    def __init__(self, id=None, name=None, description=None, serviceId=None,
-                 tenantId=None, propagate=None, weight=None):
-        super(Role, self).__init__()
+    def __init__(self, id=None, name=None, description=None, enabled=None,
+                 created=None):
+        '''
+        An object that represents an tenants response object.
+        '''
+        super(Tenant, self).__init__()
         self.id = id
         self.name = name
         self.description = description
-        self.serviceId = serviceId
-        self.tenantId = tenantId
-        self.weight = weight
-        self.propagate = propagate
+        self.enabled = enabled
+        self.created = created
 
     @classmethod
     def _json_to_obj(cls, serialized_str):
         json_dict = json.loads(serialized_str)
-        json_dict['role']['propagate'] = json_dict['role'].pop('RAX-AUTH:propagate')
-        json_dict['role']['weight'] = json_dict['role'].pop('RAX-AUTH:Weight')
-        return Role(**json_dict.get(cls.ROOT_TAG))
+        return cls._dict_to_obj(json_dict.get(cls.TAG))
+
+    @classmethod
+    def _dict_to_obj(cls, dic):
+        return Tenant(**dic)
 
     @classmethod
     def _xml_to_obj(cls, serialized_str):
         element = ElementTree.fromstring(serialized_str)
         cls._remove_identity_xml_namespaces(element)
-        if element.tag != cls.ROOT_TAG:
+        if element.tag != cls.TAG:
             return None
         return cls._xml_ele_to_obj(element)
 
@@ -90,10 +92,30 @@ class Role(BaseIdentityModel):
     def _xml_ele_to_obj(cls, xml_ele):
         kwargs = {'name': xml_ele.get('name'),
                   'description': xml_ele.get('description'),
-                  'serviceId': xml_ele.get('serviceId'),
-                  'tenantId': xml_ele.get('tenantId')}
+                  'created': xml_ele.get('created')}
         try:
             kwargs['id'] = int(xml_ele.get('id'))
         except (ValueError, TypeError):
             kwargs['id'] = xml_ele.get('id')
-        return Role(**kwargs)
+        if xml_ele.get('enabled') is not None:
+            kwargs['enabled'] = json.loads(xml_ele.get('enabled').lower())
+        return Tenant(**kwargs)
+
+# needs to be finished once i can find what this object looks like
+class TenantsLinks(BaseIdentityListModel):
+
+    TAG = 'tenantslinks'
+
+    def __init__(self, tenantlink=None):
+        super(TenantsLinks, self).__init__()
+        self.extend(tenantlink)
+
+
+class TenantsLink(BaseIdentityModel):
+
+    TAG = 'tenantslink'
+
+    def __init__(self):
+        self.href = None
+        self.type = None
+        self.rel = None
