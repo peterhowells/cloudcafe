@@ -21,8 +21,6 @@ from cloudcafe.identity.v2_0.base import \
 
 class Users(BaseIdentityListModel):
 
-    TAG = 'users'
-
     def __init__(self, users=None):
         '''
         Models a users list returned by keystone
@@ -36,27 +34,27 @@ class Users(BaseIdentityListModel):
         for user_dict in users_dict_list:
             user = user_dict
 
+        return users
+
 class User(BaseIdentityModel):
 
-    TAG = 'user'
-
-    def __init__(self):
+    def __init__(self, name=None, id_=None, tenantId=None,
+                 enabled=None, email=None):
         '''
         Models a user returned by keystone
         '''
-        self.name = None
-        self.id = None
-        self.tenantId = None
-        self.enabled = None
-        self.email = None
+        self.name = name
+        self.id_ = id_
+        self.tenantId = tenantId
+        self.enabled = enabled
+        self.email = email
 
     @classmethod
     def _dict_to_obj(self, user_dict):
-        user = User()
-        user.name = user_dict.get('name')
-        user.id = user_dict.get('id')
-        user.tenantId = user_dict.get('tenantId')
-        user.enabled = user_dict.get('enabled')
-        user.email = user_dict.get('email')
+        user = User(user.name = user_dict.get('name'),
+                    user.id = user_dict.get('id'), 
+                    user.tenantId = user_dict.get('tenantId'), 
+                    user.enabled = user_dict.get('enabled'),
+                    user.email = user_dict.get('email'))
 
         return user
