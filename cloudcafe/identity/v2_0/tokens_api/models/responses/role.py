@@ -22,8 +22,6 @@ from cloudcafe.identity.v2_0.tokens_api.models.base import \
 
 class Roles(BaseIdentityListModel):
 
-    ROOT_TAG = 'roles'
-
     def __init__(self, roles=None):
         '''An object that represents an users response object.
         Keyword arguments:
@@ -34,55 +32,47 @@ class Roles(BaseIdentityListModel):
     @classmethod
     def _json_to_obj(cls, serialized_str):
         json_dict = json.loads(serialized_str)
-        return cls._list_to_obj(json_dict.get(cls.ROOT_TAG))
+        return cls._list_to_obj(json_dict.get('roles'))
 
     @classmethod
     def _list_to_obj(cls, list_):
-        ret = {cls.ROOT_TAG: [Role(**role) for role in list_]}
+        ret = {'roles': [Role(**role) for role in list_]}
         return Roles(**ret)
 
     @classmethod
     def _xml_to_obj(cls, serialized_str):
         element = ElementTree.fromstring(serialized_str)
         cls._remove_identity_xml_namespaces(element)
-        if element.tag != cls.ROOT_TAG:
+        if element.tag != 'roles':
             return None
-        return cls._xml_list_to_obj(element.findall(Role.ROOT_TAG))
+        return cls._xml_list_to_obj(element.findall('roles'))
 
     @classmethod
     def _xml_list_to_obj(cls, xml_list):
-        kwargs = {cls.ROOT_TAG: [Role._xml_ele_to_obj(role)
-                                 for role in xml_list]}
+        kwargs = {'roles': [Role._xml_ele_to_obj(role) for role in xml_list]}
         return Roles(**kwargs)
 
 
 class Role(BaseIdentityModel):
 
-    ROOT_TAG = 'role'
-
-    def __init__(self, id=None, name=None, description=None, serviceId=None,
-                 tenantId=None, propagate=None, weight=None):
-        super(Role, self).__init__()
-        self.id = id
+    def __init__(self, id_=None, name=None):
+        '''
+        Represents a role model for keystone
+        '''
+        self.id = id_
         self.name = name
-        self.description = description
-        self.serviceId = serviceId
-        self.tenantId = tenantId
-        self.weight = weight
-        self.propagate = propagate
 
     @classmethod
     def _json_to_obj(cls, serialized_str):
         json_dict = json.loads(serialized_str)
-        json_dict['role']['propagate'] = json_dict['role'].pop('RAX-AUTH:propagate')
-        json_dict['role']['weight'] = json_dict['role'].pop('RAX-AUTH:Weight')
-        return Role(**json_dict.get(cls.ROOT_TAG))
+        role = Role(id_ = json_dict.get('id'), 
+                    name = json_dict.get('name'))
+        return role
 
-    @classmethod
     def _xml_to_obj(cls, serialized_str):
         element = ElementTree.fromstring(serialized_str)
         cls._remove_identity_xml_namespaces(element)
-        if element.tag != cls.ROOT_TAG:
+        if element.tag != 'role':
             return None
         return cls._xml_ele_to_obj(element)
 
