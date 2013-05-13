@@ -23,7 +23,7 @@ from cloudcafe.identity.v2_0.tokens_api.models.responses.role import Roles, Role
 
 class Users(BaseIdentityListModel):
 
-    ROOT_TAG = 'users'
+    TAG = 'users'
 
     def __init__(self, users=None):
         super(Users, self).__init__()
@@ -32,28 +32,28 @@ class Users(BaseIdentityListModel):
     @classmethod
     def _json_to_obj(cls, serialized_str):
         ret = json.loads(serialized_str)
-        ret[cls.ROOT_TAG] = [User._dict_to_obj(user)
-                             for user in ret.get(cls.ROOT_TAG)]
+        ret[cls.TAG] = [User._dict_to_obj(user)
+                             for user in ret.get(cls.TAG)]
         return Users(**ret)
 
     @classmethod
     def _xml_to_obj(cls, serialized_str):
         element = ElementTree.fromstring(serialized_str)
         cls._remove_identity_xml_namespaces(element)
-        if element.tag != cls.ROOT_TAG:
+        if element.tag != cls.TAG:
             return None
-        return cls._xml_list_to_obj(element.findall(User.ROOT_TAG))
+        return cls._xml_list_to_obj(element.findall(User.TAG))
 
     @classmethod
     def _xml_list_to_obj(cls, xml_list):
-        kwargs = {cls.ROOT_TAG: [User._xml_ele_to_obj(ele)
+        kwargs = {cls.TAG: [User._xml_ele_to_obj(ele)
                                  for ele in xml_list]}
         return Users(**kwargs)
 
 
 class User(BaseIdentityModel):
 
-    ROOT_TAG = 'user'
+    TAG = 'user'
 
     def __init__(self, id=None, enabled=None, username=None, updated=None,
                  created=None, email=None, domainId=None, defaultRegion=None,
@@ -92,7 +92,7 @@ class User(BaseIdentityModel):
     @classmethod
     def _json_to_obj(cls, serialized_str):
         json_dict = json.loads(serialized_str)
-        user = cls._dict_to_obj(json_dict.get(cls.ROOT_TAG))
+        user = cls._dict_to_obj(json_dict.get(cls.TAG))
         return user
 
     @classmethod
@@ -110,16 +110,16 @@ class User(BaseIdentityModel):
         if 'display-name' in json_dict:
             json_dict['display_name'] = json_dict['display-name']
             del json_dict['display-name']
-        if Roles.ROOT_TAG in json_dict:
-            json_dict[Roles.ROOT_TAG] = Roles.\
-                _list_to_obj(json_dict[Roles.ROOT_TAG])
+        if Roles.TAG in json_dict:
+            json_dict[Roles.TAG] = Roles.\
+                _list_to_obj(json_dict[Roles.TAG])
         return User(**json_dict)
 
     @classmethod
     def _xml_to_obj(cls, serialized_str):
         element = ElementTree.fromstring(serialized_str)
         cls._remove_identity_xml_namespaces(element)
-        if element.tag != cls.ROOT_TAG:
+        if element.tag != cls.TAG:
             return None
         return cls._xml_ele_to_obj(element)
 
@@ -140,11 +140,11 @@ class User(BaseIdentityModel):
             kwargs['id'] = xml_ele.get('id')
         if xml_ele.get('enabled') is not None:
             kwargs['enabled'] = json.loads(xml_ele.get('enabled').lower())
-        roles = xml_ele.find(Roles.ROOT_TAG)
+        roles = xml_ele.find(Roles.TAG)
         if roles is not None:
             #if roles is not a list it is a single element with a list of
             #role elements
-            roles = roles.findall(Role.ROOT_TAG)
+            roles = roles.findall(Role.TAG)
         if roles is not None:
             kwargs['roles'] = Roles._xml_list_to_obj(roles)
         return User(**kwargs)
