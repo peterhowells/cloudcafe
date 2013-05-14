@@ -87,6 +87,8 @@ class Service(BaseIdentityModel):
                           endpoint_links = json_dict.get('endpoints_links'), 
                           name = json_dict.get('name'), 
                           type_ = json_dict.get('type')
+                          )
+                        )
 
         return service
 
@@ -153,9 +155,9 @@ class Tenant(BaseIdentityModel):
     @classmethod
     def _dict_to_obj(cls, json_dict):
         tenant = Tenant(description = json_dict.get('description'), 
-                        tenant.enabled = json_dict.get('enabled'), 
-                        tenant.id_ = json_dict.get('id'), 
-                        tenant.name = json_dict.get('name'))
+                        enabled = json_dict.get('enabled'), 
+                        id_ = json_dict.get('id'), 
+                        name = json_dict.get('name'))
 
         return tenant
 
