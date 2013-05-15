@@ -48,7 +48,7 @@ class Values(BaseIdentityListModel):
         Models a list of values returned by keystone
         '''
         super(Values, self).__init__()
-        self.extend(values)
+        self.extend(values) if values else values #TODO revisit this logic to allow values=None
 
     @classmethod
     def _list_to_obj(self, value_dict_list):
@@ -76,12 +76,13 @@ class Value(BaseIdentityModel):
 
     @classmethod
     def _dict_to_obj(cls, json_dict):
-        value = Value(updated = json_dict.get('updated'), 
+        value = Value(updated = json_dict.get('updated'),
                       name = json_dict.get('name'), 
                       namespace = json_dict.get('namespace'), 
                       alias = json_dict.get('alias'), 
                       description = json_dict.get('description'), 
-                      links = Links._list_to_obj(json_dict.get('links')))
+                      links =(Links._list_to_obj(json_dict.get('links'))))
+
 
         return value
 
@@ -93,16 +94,20 @@ class Links(BaseIdentityListModel):
         Models a list of links returned by keystone
         '''
         super(Links, self).__init__()
-        self.extend(links)
+        if links:
+          self.extend(links)
+
+        self.links = links
 
     @classmethod
     def _list_to_obj(self, link_dict_list):
         links = Links()
-        for link_dict in link_dict_list:
-            link = Link._dict_to_obj(link_dict)
-            links.append(link)
+        if link_dict_list:
+          for link_dict in link_dict_list:
+              link = Link._dict_to_obj(link_dict)
+              links.append(link)
 
-        return links
+          return links
 
 
 class Link(BaseIdentityModel):
