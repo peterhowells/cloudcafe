@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 import json
-from cloudcafe.identity.v2_0.shared.base import \
+from cloudcafe.identity.v2_0.base import \
     BaseIdentityModel, BaseIdentityListModel
 
 
@@ -30,13 +30,13 @@ class Extensions(BaseIdentityModel):
     @classmethod
     def _json_to_obj(cls, serialized_str):
         json_dict = json.loads(serialized_str)
-        return cls._dict_to_obj(json_dict.get(cls.TAG))
+        return cls._dict_to_obj(json_dict.get('extensions'))
 
     @classmethod
     def _dict_to_obj(cls, json_dict):
         extensions = Extensions()
         extensions.values = Values._list_to_obj(
-            json_dict.get(Values.TAG))
+            json_dict.get('extensions'))
 
         return extensions
 
@@ -81,7 +81,7 @@ class Value(BaseIdentityModel):
                       namespace = json_dict.get('namespace'), 
                       alias = json_dict.get('alias'), 
                       description = json_dict.get('description'), 
-                      links = Links._list_to_obj(json_dict.get('links'))
+                      links = Links._list_to_obj(json_dict.get('links')))
 
         return value
 
