@@ -18,7 +18,7 @@ import json
 from xml.etree import ElementTree
 
 from cloudcafe.identity.v2_0.base import BaseIdentityModel
-from cloudcafe.identity.v2_0.common import V2_0Constants
+from cloudcafe.identity.v2_0.common.constants import V2_0Constants
 
 
 class User(BaseIdentityModel):

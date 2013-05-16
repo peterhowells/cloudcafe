@@ -15,9 +15,12 @@ limitations under the License.
 """
 
 import json
+from xml.etree import ElementTree
 
 from cloudcafe.identity.v2_0.base import \
-    BaseIdentityModel, BaseIdentityListModel
+BaseIdentityModel, BaseIdentityListModel
+from cloudcafe.identity.v2_0.common.constants import V2_0Constants
+
 
 class Users(BaseIdentityListModel):
 
@@ -32,7 +35,8 @@ class Users(BaseIdentityListModel):
     def _list_to_obj(cls, users_dict_list):
         users = Users()
         for user_dict in users_dict_list:
-            user = user_dict
+            user = User._dict_to_obj(user_dict)
+            users.append(user)
 
         return users
 
