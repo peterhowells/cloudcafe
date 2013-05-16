@@ -50,7 +50,7 @@ class Role(BaseIdentityModel):
 
     @classmethod
     def _dict_to_obj(cls, json_dict):
-        role = Role(role.id = json_dict.get('id'),
-                    role.name = json_dict.get('name'))
+        role = Role(id_ = json_dict.get('id'),
+                    name = json_dict.get('name'))
 
         return role
