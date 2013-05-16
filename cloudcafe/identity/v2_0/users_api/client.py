@@ -83,13 +83,6 @@ class UsersAPI_Client(AutoMarshallingRestClient):
                   'enabled': enabled, 'password': password}
         user = RequestUser(**kwargs)
 
-        if self.serialize_format.lower() == 'json':
-            user_request_entity = user._obj_to_json()
-        elif self.serialize_format.lower() == 'xml':
-            user_request_entity = user._obj_to_xml()
-        else:
-            raise TypeError('Invalid Serialization Format')
-
         url = '%s/users' % self.base_url
         server_response = self.post(url, response_entity_type=RepsonseUser,
                                     request_entity=user_request_entity,
@@ -116,13 +109,6 @@ class UsersAPI_Client(AutoMarshallingRestClient):
         kwargs = {'username': username, 'email': email, 
                   'enabled': enabled, 'id_': id_}
         user = RequestUser(**kwargs)
-        
-        if self.serialize_format.lower() == 'json':
-            user_request_entity = user._obj_to_json()
-        elif self.serialize_format.lower() == 'xml':
-            user_request_entity = user._obj_to_xml()
-        else:
-            raise TypeError('Invalid Serialization Format')
 
         url = '%s/users/%s' % (self.base_url, id_)
         server_response = self.post(url, response_entity_type=ResponseUser,

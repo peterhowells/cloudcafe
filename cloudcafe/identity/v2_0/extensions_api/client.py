@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 from cafe.engine.clients.rest import AutoMarshallingRestClient
-from cloudcafe.identity.v2_0.extensions_api.responses.extensions import \
+from cloudcafe.identity.v2_0.extensions_api.models.responses.extensions import \
     Extensions
 
 _version = 'v2.0'
@@ -23,26 +23,26 @@ _version = 'v2.0'
 
 class ExtensionAPI_Client(AutoMarshallingRestClient):
 
-    def __init__(self, url, auth_token, 
-                 serialize_format=None, deserialize_format=None):
+    def __init__(self, url=None, auth_token=None,
+                 serialized_format=None, deserialized_format=None):
         """
         @param url: Base URL for the compute service
         @type url: String
         @param auth_token: Auth token to be used for all requests
         @type auth_token: String
-        @param serialize_format: Format for serializing requests
-        @type serialize_format: String
-        @param deserialize_format: Format for de-serializing responses
-        @type deserialize_format: String
+        @param serialized_format: Format for serializing requests
+        @type serialized_format: String
+        @param deserialized_format: Format for de-serializing responses
+        @type deserialized_format: String
         """
 
         super(ExtensionAPI_Client, self).__init__(
-            serialize_format, deserialize_format)
+            serialized_format, deserialized_format)
         self.base_url = '{0}/{1}'.format(url,_version)
         self.default_headers['Content-Type'] = 'application/{0}'.format(
-            serialize_format)
+            serialized_format)
         self.default_headers['Accept'] = 'application/{0}'.format(
-            serialize_format)
+            serialized_format)
         self.default_headers['X-Auth-Token'] = auth_token
 
     def list_extensions(self, requestslib_kwards=None):
@@ -52,8 +52,8 @@ class ExtensionAPI_Client(AutoMarshallingRestClient):
         @rtype: Response
         """
         url = '%s/extensions' % self.base_url
-        server_response = self.request('GET', url, 
+        server_response = self.request('GET', url,
                                        response_entity_type=Extensions,
-                                       requestslib_kwargs=requestslib_kwargs)
+                                       requestslib_kwargs=requestslib_kwards)
 
         return server_response
