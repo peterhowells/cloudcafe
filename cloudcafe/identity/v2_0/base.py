@@ -17,7 +17,7 @@ limitations under the License.
 from cafe.engine.models.base import \
     AutoMarshallingModel, AutoMarshallingListModel
 
-from cloudcafe.identity.v2_0.common.models.constants import V2_0Constants
+from cloudcafe.identity.v2_0.common.constants import V2_0Constants
 
 
 class BaseIdentityModel(AutoMarshallingModel):
