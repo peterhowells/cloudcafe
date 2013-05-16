@@ -51,10 +51,10 @@ class User(BaseIdentityModel):
 
     @classmethod
     def _dict_to_obj(self, user_dict):
-        user = User(user.name = user_dict.get('name'),
-                    user.id = user_dict.get('id'), 
-                    user.tenantId = user_dict.get('tenantId'), 
-                    user.enabled = user_dict.get('enabled'),
-                    user.email = user_dict.get('email'))
+        user = User(name = user_dict.get('name'),
+                    id = user_dict.get('id'), 
+                    tenantId = user_dict.get('tenantId'), 
+                    enabled = user_dict.get('enabled'),
+                    email = user_dict.get('email'))
 
         return user
