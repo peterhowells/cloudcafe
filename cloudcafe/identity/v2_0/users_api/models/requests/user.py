@@ -23,7 +23,8 @@ from cloudcafe.identity.v2_0.common.models import V2_0Constants
 
 class User(BaseIdentityModel):
 
-    def __init__(self, username=None, email=None, enabled=None, password=None):
+    def __init__(self, id_=None, username=None, 
+        email=None, enabled=None, password=None):
         """
         Models a new user model for Keystone
         """
@@ -34,6 +35,8 @@ class User(BaseIdentityModel):
 
     def _obj_to_dict(self):
         ret = {}
+        if self.id_ is not None:
+            ret['id'] = self.id_
         if self.username is not None:
             ret['username'] = self.username
         if self.email is not None:
