@@ -38,6 +38,7 @@ class Extensions(BaseIdentityModel):
     @classmethod
     def _json_to_obj(cls, serialized_str):
       json_dict = json.loads(serialized_str)
+
       return cls._dict_to_obj(json_dict.get('extensions'))
 
 class Values(BaseIdentityListModel):
@@ -48,7 +49,6 @@ class Values(BaseIdentityListModel):
         '''
         super(Values, self).__init__()
         self.extend(values)
-        self.values = values
 
     @classmethod
     def _list_to_obj(self, value_dict_list):
