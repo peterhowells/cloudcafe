@@ -28,11 +28,6 @@ class Extensions(BaseIdentityModel):
         self.values = values
 
     @classmethod
-    def _json_to_obj(cls, serialized_str):
-        json_dict = json.loads(serialized_str)
-        return cls._dict_to_obj(json_dict.get('extensions'))
-
-    @classmethod
     def _dict_to_obj(cls, json_dict):
         extensions = Extensions()
         extensions.values = Values._list_to_obj(
@@ -40,6 +35,10 @@ class Extensions(BaseIdentityModel):
 
         return extensions
 
+    @classmethod
+    def _json_to_obj(cls, serialized_str):
+      json_dict = json.loads(serialized_str)
+      return cls._dict_to_obj(json_dict.get('extensions'))
 
 class Values(BaseIdentityListModel):
 
@@ -48,11 +47,12 @@ class Values(BaseIdentityListModel):
         Models a list of values returned by keystone
         '''
         super(Values, self).__init__()
-        self.extend(values) if values else values #TODO revisit this logic to allow values=None
+        self.extend(values)
+        self.values = values
 
     @classmethod
     def _list_to_obj(self, value_dict_list):
-        values = Values()
+        values = Values([])
         for value_dict in value_dict_list:
             value = Value._dict_to_obj(value_dict)
             values.append(value)
@@ -94,10 +94,7 @@ class Links(BaseIdentityListModel):
         Models a list of links returned by keystone
         '''
         super(Links, self).__init__()
-        if links:
-          self.extend(links)
-
-        self.links = links
+        self.extend(links) if links else links
 
     @classmethod
     def _list_to_obj(self, link_dict_list):
