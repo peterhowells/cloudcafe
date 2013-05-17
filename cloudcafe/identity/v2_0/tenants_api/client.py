@@ -18,15 +18,16 @@ from cafe.engine.clients.rest import AutoMarshallingRestClient
 from cloudcafe.identity.v2_0.tenants_api.models.responses.tenant import \
     Tenants, Tenant
 from cloudcafe.identity.v2_0.tenants_api.models.responses.roles import \
-    Roels, Role
+    Roles
 from cloudcafe.identity.v2_0.users_api.models.responses.users import \
-    Users, User
+    Users
 
 _version = 'v2.0'
 
+
 class TenantsAPI_Client(AutoMarshallingRestClient):
 
-    def __init__(self, url, auth_token, 
+    def __init__(self, url, auth_token,
                  serialize_format=None, deserialize_format=None):
         """
         @param url: Base URL for the compute service
@@ -41,7 +42,7 @@ class TenantsAPI_Client(AutoMarshallingRestClient):
 
         super(TenantsAPI_Client, self).__init__(
             serialize_format, deserialize_format)
-        self.base_url = '{0}/{1}'.format(url,_version)
+        self.base_url = '{0}/{1}'.format(url, _version)
         self.default_headers['Content-Type'] = 'application/{0}'.format(
             serialize_format)
         self.default_headers['Accept'] = 'application/{0}'.format(
@@ -56,7 +57,7 @@ class TenantsAPI_Client(AutoMarshallingRestClient):
         """
 
         url = '%s/tenants' % self.base_url
-        server_response = self.request('GET', url, 
+        server_response = self.request('GET', url,
                                        response_entity_type=Tenants,
                                        requestslib_kwargs=requestslib_kwargs)
 
@@ -64,7 +65,7 @@ class TenantsAPI_Client(AutoMarshallingRestClient):
 
     def get_tenant(self, tenant_id, requestslib_kwargs=None):
         """
-        @summary: Returns a tenant based off passed tenant_id. 
+        @summary: Returns a tenant based off passed tenant_id.
          Maps to /tenants/{tenantid}
         @param tenant_id: The ID for the tenant
         @type tenant_id: String
@@ -72,8 +73,8 @@ class TenantsAPI_Client(AutoMarshallingRestClient):
         @rtype: Response
         """
 
-        url = '%s/tenants/%s' % (url, tenant_id)
-        server_response = self.request('GET', url, 
+        url = '%s/tenants/%s' % (self.base_url, tenant_id)
+        server_response = self.request('GET', url,
                                        response_entity_type=Tenant,
                                        requestslib_kwargs=requestslib_kwargs)
 
@@ -81,7 +82,7 @@ class TenantsAPI_Client(AutoMarshallingRestClient):
 
     def get_users_for_tenant(self, tenant_id, requestslib_kwargs=None):
         """
-        @summary: Returns all the users that a tenant has. 
+        @summary: Returns all the users that a tenant has.
          Maps to /tenants/{tenant_id}/users.
         @param tenant_id: The ID for the tenant
         @type tenant_id: String
@@ -89,8 +90,8 @@ class TenantsAPI_Client(AutoMarshallingRestClient):
         @rtype: Response
         """
 
-        url = '%s/tenants/%s/users' % (url, tenant_id)
-        server_response = self.request('GET', url, 
+        url = '%s/tenants/%s/users' % (self.base_url, tenant_id)
+        server_response = self.request('GET', url,
                                        response_entity_type=Users,
                                        requestslib_kwargs=requestslib_kwargs)
 
@@ -108,8 +109,9 @@ class TenantsAPI_Client(AutoMarshallingRestClient):
         @rtype: Response
         """
 
-        url = '%s/tenants/%s/users/%s/roles' % (url, tenant_id, user_id)
-        server_response = self.request('GET', url, 
+        url = '%s/tenants/%s/users/%s/roles' % (
+            self.base_url, tenant_id, user_id)
+        server_response = self.request('GET', url,
                                        response_entity_type=Roles,
                                        requestslib_kwargs=requestslib_kwargs)
 
