@@ -49,13 +49,13 @@ class Tenants(BaseIdentityListModel):
     @classmethod
     def _xml_list_to_obj(cls, xml_list):
         kwargs = {'tenants': [Tenant._xml_ele_to_obj(ele)
-                                 for ele in xml_list]}
+                              for ele in xml_list]}
         return Tenants(**kwargs)
 
 
 class Tenant(BaseIdentityModel):
 
-    def __init__(self, id_=None, name=None, description=None, 
+    def __init__(self, id_=None, name=None, description=None,
                  enabled=None, created=None):
         '''
         An object that represents an tenants response object.
@@ -96,6 +96,7 @@ class Tenant(BaseIdentityModel):
             kwargs['enabled'] = json.loads(xml_ele.get('enabled').lower())
         return Tenant(**kwargs)
 
+
 # needs to be finished once I can find what this object looks like,
 # class and methods are place holders for what I think it looks like.
 # jwagner
@@ -126,9 +127,9 @@ class TenantsLink(BaseIdentityModel):
         self.rel = rel
 
     def _dict_to_obj(cls, tenant_dict):
-        tenantlink = TenantsLink(href = tenant_dict.get('href'),
-                                 type_ = tenant_dict.get('type'),
-                                 rel = tenant_dict.get('rel'))
+        tenantlink = TenantsLink(href=tenant_dict.get('href'),
+                                 type_=tenant_dict.get('type'),
+                                 rel=tenant_dict.get('rel'))
 
         return tenantlink
 

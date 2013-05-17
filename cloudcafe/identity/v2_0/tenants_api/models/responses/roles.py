@@ -14,8 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import json
-
 from cloudcafe.identity.v2_0.shared.base import \
     BaseIdentityModel, BaseIdentityListModel
 
@@ -50,7 +48,7 @@ class Role(BaseIdentityModel):
 
     @classmethod
     def _dict_to_obj(cls, json_dict):
-        role = Role(id_ = json_dict.get('id'),
-                    name = json_dict.get('name'))
+        role = Role(id_=json_dict.get('id'),
+                    name=json_dict.get('name'))
 
         return role
