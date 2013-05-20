@@ -49,15 +49,16 @@ class Tenants(BaseIdentityListModel):
     @classmethod
     def _xml_list_to_obj(cls, xml_list):
         kwargs = {'tenants': [Tenant._xml_ele_to_obj(ele)
-                                 for ele in xml_list]}
+                              for ele in xml_list]}
         return Tenants(**kwargs)
 
 
 class Tenant(BaseIdentityModel):
 
-    def __init__(self, id_=None, name=None, description=None, enabled=None,
-                 created=None):
-        '''An object that represents an tenants response object.
+    def __init__(self, id_=None, name=None, description=None,
+                 enabled=None, created=None):
+        '''
+        An object that represents an tenants response object.
         '''
         self.id_ = id_
         self.name = name
@@ -66,13 +67,13 @@ class Tenant(BaseIdentityModel):
         self.created = created
 
     @classmethod
+    def _dict_to_obj(cls, dic):
+        return Tenant(**dic)
+
+    @classmethod
     def _json_to_obj(cls, serialized_str):
         json_dict = json.loads(serialized_str)
         return cls._dict_to_obj(json_dict.get('tenant'))
-
-    @classmethod
-    def _dict_to_obj(cls, dic):
-        return Tenant(**dic)
 
     @classmethod
     def _xml_to_obj(cls, serialized_str):
@@ -94,3 +95,48 @@ class Tenant(BaseIdentityModel):
         if xml_ele.get('enabled') is not None:
             kwargs['enabled'] = json.loads(xml_ele.get('enabled').lower())
         return Tenant(**kwargs)
+
+
+# needs to be finished once I can find what this object looks like,
+# class and methods are place holders for what I think it looks like.
+# jwagner
+class TenantsLinks(BaseIdentityListModel):
+
+    def __init__(self, tenantlink=None):
+        super(TenantsLinks, self).__init__()
+        self.extend(tenantlink)
+
+    @classmethod
+    def _dict_to_obj(cls, json_dict):
+        return TenantsLinks(**json_dict)
+
+    @classmethod
+    def _list_to_obj(cls, tenantlinks_list_dict):
+        tenantlinks = TenantsLinks()
+        for tenantlink_dict in tenantlinks_list_dict:
+            tenantlink = TenantsLink._dict_to_obj(tenantlink_dict)
+            tenantlinks.append(tenantlink)
+
+        return tenantlinks
+
+    @classmethod
+    def _json_to_obj(cls, serialized_str):
+        json_dict = json.loads(serialized_str)
+        return cls._dict_to_obj(json_dict)
+
+
+class TenantsLink(BaseIdentityModel):
+
+    def __init__(self, href=None, type_=None, rel=None):
+        self.href = href
+        self.type = type_
+        self.rel = rel
+
+    @classmethod
+    def _dict_to_obj(cls, tenant_dict):
+        return TenantsLink(**tenant_dict)
+
+    @classmethod
+    def _json_to_obj(cls, serialized_str):
+        json_dict = json.loads(serialized_str)
+        return cls._dict_to_obj(json_dict)

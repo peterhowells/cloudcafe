@@ -22,8 +22,6 @@ from cloudcafe.identity.v2_0.tokens_api.models.base import \
 
 class Endpoints(BaseIdentityListModel):
 
-    ROOT_TAG = 'endpoints'
-
     def __init__(self, endpoints=None):
         super(Endpoints, self).__init__()
         self.extend(endpoints)
@@ -31,31 +29,29 @@ class Endpoints(BaseIdentityListModel):
     @classmethod
     def _json_to_obj(cls, serialized_str):
         json_dict = json.loads(serialized_str)
-        return cls._list_to_obj(json_dict.get(cls.ROOT_TAG))
+        return cls._list_to_obj(json_dict.get('endpoints'))
 
     @classmethod
     def _list_to_obj(cls, list_):
-        ret = {cls.ROOT_TAG: [Endpoint(**endpoint) for endpoint in list_]}
+        ret = {'endpoints': [Endpoint(**endpoint) for endpoint in list_]}
         return Endpoints(**ret)
 
     @classmethod
     def _xml_to_obj(cls, serialized_str):
         element = ElementTree.fromstring(serialized_str)
         cls._remove_identity_xml_namespaces(element)
-        if element.tag != cls.ROOT_TAG:
+        if element.tag != 'endpoints':
             return None
-        return cls._xml_list_to_obj(element.findall(Endpoint.ROOT_TAG))
+        return cls._xml_list_to_obj(element.findall('endpoint'))
 
     @classmethod
     def _xml_list_to_obj(cls, xml_list):
-        kwargs = {cls.ROOT_TAG: [Endpoint._xml_ele_to_obj(endpoint)
+        kwargs = {'endpoints': [Endpoint._xml_ele_to_obj(endpoint)
                                  for endpoint in xml_list]}
         return Endpoints(**kwargs)
 
 
 class Endpoint(BaseIdentityModel):
-
-    ROOT_TAG = 'endpoint'
 
     def __init__(self, tenantId=None, region=None, id=None, publicURL=None,
                  name=None, adminURL=None, type=None, internalURL=None,
@@ -80,19 +76,19 @@ class Endpoint(BaseIdentityModel):
     @classmethod
     def _json_to_obj(cls, serialized_str):
         json_dict = json.loads(serialized_str)
-        return cls._dict_to_obj(json_dict.get(cls.ROOT_TAG))
+        return cls._dict_to_obj(json_dict.get('endpoint'))
 
     @classmethod
     def _dict_to_obj(cls, dic):
-        if Version.ROOT_TAG in dic:
-            dic[Version.ROOT_TAG] = Version(**dic[Version.ROOT_TAG])
+        if 'version' in dic:
+            dic['version'] = Version(**dic['version'])
         return Endpoint(**dic)
 
     @classmethod
     def _xml_to_obj(cls, serialized_str):
         element = ElementTree.fromstring(serialized_str)
         cls._remove_identity_xml_namespaces(element)
-        if element.tag != cls.ROOT_TAG:
+        if element.tag != 'endpoint':
             return None
         return cls._xml_ele_to_obj(element)
 
@@ -109,7 +105,7 @@ class Endpoint(BaseIdentityModel):
             kwargs['id'] = int(xml_ele.get('id'))
         except (ValueError, TypeError):
             kwargs['id'] = xml_ele.get('id')
-        version = xml_ele.find(Version.ROOT_TAG)
+        version = xml_ele.find('version')
         if version is not None:
             kwargs['versionId'] = version.get('id')
             kwargs['versionInfo'] = version.get('info')
@@ -119,12 +115,7 @@ class Endpoint(BaseIdentityModel):
 
 class Version(BaseIdentityModel):
 
-    ROOT_TAG = 'version'
-
-    def __init__(self, id=None, info=None, list=None):
-        self.id = id
+    def __init__(self, id_=None, info=None, list_=None):
+        self.id = id_
         self.info = info
-        self.list = list
-
-
-
+        self.list = list_
