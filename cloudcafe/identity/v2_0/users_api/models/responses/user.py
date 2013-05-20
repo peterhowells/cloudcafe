@@ -32,6 +32,11 @@ class Users(BaseIdentityListModel):
         self.extend(users)
 
     @classmethod
+    def _json_to_obj(cls, serialized_str):
+        json_dict = json.loads(serialized_str)
+        return cls._list_to_obj(json_dict.get('users'))
+
+    @classmethod
     def _list_to_obj(cls, users_dict_list):
         users = Users()
         for user_dict in users_dict_list:
@@ -39,6 +44,20 @@ class Users(BaseIdentityListModel):
             users.append(user)
 
         return users
+
+    @classmethod
+    def _xml_to_obj(cls, serialized_str):
+        element = ElementTree.fromstring(serialized_str)
+        cls._remove_identity_xml_namespaces(element)
+        if element.tag != 'users':
+            return None
+        return cls._xml_list_to_obj(element.findall('user'))
+
+    @classmethod
+    def _xml_list_to_obj(cls, xml_list):
+        kwargs = {'users': [User._xml_ele_to_obj(ele)
+                                 for ele in xml_list]}
+        return Tenants(**kwargs)
 
 class User(BaseIdentityModel):
 
@@ -54,11 +73,33 @@ class User(BaseIdentityModel):
         self.email = email
 
     @classmethod
+    def _json_to_obj(cls, serialized_str):
+        json_dict = json.loads(serialized_str)
+        return cls._dict_to_obj(json_dict)
+
+    @classmethod
     def _dict_to_obj(self, user_dict):
         user = User(name = user_dict.get('name'),
-                    id = user_dict.get('id'), 
+                    id_ = user_dict.get('id'), 
                     tenantId = user_dict.get('tenantId'), 
                     enabled = user_dict.get('enabled'),
                     email = user_dict.get('email'))
 
         return user
+
+    @classmethod
+    def _xml_to_obj(cls, serialized_str):
+        element = ElementTree.fromstring(serialized_str)
+        cls._remove_identity_xml_namespaces(element)
+        if element.tag != 'user'
+            return None
+        return cls._xml_ele_to_obj(element)
+
+    @classmethod
+    def _xml_ele_to_obj(cls, xml_ele):
+        kwargs = {'enabled': xml_ele.get('enabled'), 
+                  'email': xml_ele.get('email'),
+                  'username': xml_ele.get('username'),
+                  'id_': xml_ele.get('id')}
+
+        return User(**kwargs)
