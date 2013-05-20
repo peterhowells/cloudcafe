@@ -28,11 +28,18 @@ class User(BaseIdentityModel):
         """
         Models a new user model for Keystone
         """
+        self.id_ = id_
         self.username = username
         self.email = email
         self.enabled = enabled
         self.password = password
 
+    @classmethod
+    def _obj_to_json(self):
+        ret = {"user": self._obj_to_dict()}
+        return json.dumps(ret)
+
+    @classmethod
     def _obj_to_dict(self):
         ret = {}
         if self.id_ is not None:
@@ -48,16 +55,14 @@ class User(BaseIdentityModel):
 
         return ret
 
-    def _obj_to_json(self):
-        ret = {"user": self._obj_to_dict()}
-        return json.dumps(ret)
-
+    @classmethod
     def _obj_to_xml(self):
         element = self._obj_to_xml_ele()
         element.set('xmlns', V2_0Constants.XML_NS)
         element.set('xmlns:OS-KSADM', V2_0Constants.XML_NS_OS_KSADM)
         return ElementTree.tostring(element)
 
+    @classmethod
     def _obj_to_xml_ele(self):
         element = ElementTree.Element('user')
         if self.username is not None:
