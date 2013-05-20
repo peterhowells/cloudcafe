@@ -19,7 +19,7 @@ from cloudcafe.identity.v2_0.tenants_api.models.responses.tenant import \
     Tenants, Tenant
 from cloudcafe.identity.v2_0.tenants_api.models.responses.roles import \
     Roles
-from cloudcafe.identity.v2_0.users_api.models.responses.users import \
+from cloudcafe.identity.v2_0.users_api.models.responses.user import \
     Users
 
 _version = 'v2.0'
@@ -139,7 +139,7 @@ class TenantsAPI_Client(AutoMarshallingRestClient):
         """
 
         self.tenant_id = tenant_id
-        url = '%s/tenants/%s' % (self.url, self.tenant_id)
+        url = '%s/tenants/%s' % (self.base_url, self.tenant_id)
         response = self.request('DELETE', url,
                                 requestslib_kwargs=requestslib_kwargs)
         return response

@@ -19,7 +19,7 @@ from xml.etree import ElementTree
 
 from cloudcafe.identity.v2_0.base import \
     BaseIdentityModel, BaseIdentityListModel
-from cloudcafe.identity.v2_0.common.constants import V2_0Constants
+from cloudcafe.identity.v2_0.tenants_api.models.responses.tenant import Tenants
 
 
 class Users(BaseIdentityListModel):
@@ -91,7 +91,7 @@ class User(BaseIdentityModel):
     def _xml_to_obj(cls, serialized_str):
         element = ElementTree.fromstring(serialized_str)
         cls._remove_identity_xml_namespaces(element)
-        if element.tag != 'user'
+        if element.tag != 'user':
             return None
         return cls._xml_ele_to_obj(element)
 
