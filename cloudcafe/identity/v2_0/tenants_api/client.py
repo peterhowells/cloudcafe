@@ -29,7 +29,7 @@ class TenantsAPI_Client(AutoMarshallingRestClient):
     def __init__(self, url, auth_token, 
                  serialize_format=None, deserialize_format=None):
         """
-        @param url: Base URL for the compute service
+        @param url: Base URL for the keystone service
         @type url: String
         @param auth_token: Auth token to be used for all requests
         @type auth_token: String

@@ -28,6 +28,7 @@ class User(BaseIdentityModel):
         """
         Models a new user model for Keystone
         """
+        self.id_ = id_
         self.username = username
         self.email = email
         self.enabled = enabled
