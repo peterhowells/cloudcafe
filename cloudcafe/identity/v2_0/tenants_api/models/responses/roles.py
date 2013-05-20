@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from cloudcafe.identity.v2_0.shared.base import \
+from cloudcafe.identity.v2_0.base import \
     BaseIdentityModel, BaseIdentityListModel
 
 
@@ -29,7 +29,7 @@ class Roles(BaseIdentityListModel):
 
     @classmethod
     def _list_to_obj(self, role_dict_list):
-        roles = Roles()
+        roles = Roles([])
         for role_dict in role_dict_list:
             role = Role._dict_to_obj(role_dict)
             roles.append(role)
