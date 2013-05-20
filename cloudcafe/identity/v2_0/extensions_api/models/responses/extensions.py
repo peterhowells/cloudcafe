@@ -20,11 +20,10 @@ from cloudcafe.identity.v2_0.base import \
 
 
 class Extensions(BaseIdentityModel):
-
     def __init__(self, values=None):
-        '''
+        """
         Models a extensions object returned by keystone
-        '''
+        """
         self.values = values
 
     @classmethod
@@ -37,12 +36,11 @@ class Extensions(BaseIdentityModel):
 
     @classmethod
     def _json_to_obj(cls, serialized_str):
-      json_dict = json.loads(serialized_str)
+        json_dict = json.loads(serialized_str)
+        return cls._dict_to_obj(json_dict.get('extensions'))
 
-      return cls._dict_to_obj(json_dict.get('extensions'))
 
 class Values(BaseIdentityListModel):
-
     def __init__(self, values=None):
         '''
         Models a list of values returned by keystone
@@ -61,7 +59,6 @@ class Values(BaseIdentityListModel):
 
 
 class Value(BaseIdentityModel):
-
     def __init__(self, updated=None, name=None, links=None, namespace=None,
                  alias=None, description=None):
         '''
@@ -76,39 +73,35 @@ class Value(BaseIdentityModel):
 
     @classmethod
     def _dict_to_obj(cls, json_dict):
-        value = Value(updated = json_dict.get('updated'),
-                      name = json_dict.get('name'), 
-                      namespace = json_dict.get('namespace'), 
-                      alias = json_dict.get('alias'), 
-                      description = json_dict.get('description'), 
-                      links =(Links._list_to_obj(json_dict.get('links'))))
-
+        value = Value(updated=json_dict.get('updated'),
+                      name=json_dict.get('name'),
+                      namespace=json_dict.get('namespace'),
+                      alias=json_dict.get('alias'),
+                      description=json_dict.get('description'),
+                      links=(Links._list_to_obj(json_dict.get('links'))))
 
         return value
 
 
 class Links(BaseIdentityListModel):
-
     def __init__(self, links=None):
         '''
         Models a list of links returned by keystone
         '''
         super(Links, self).__init__()
-        self.extend(links) if links else links
+        self.extend(links)
 
     @classmethod
     def _list_to_obj(self, link_dict_list):
-        links = Links()
-        if link_dict_list:
-          for link_dict in link_dict_list:
-              link = Link._dict_to_obj(link_dict)
-              links.append(link)
+        links = Links([])
+        for link_dict in link_dict_list:
+            link = Link._dict_to_obj(link_dict)
+            links.append(link)
 
-          return links
+        return links
 
 
 class Link(BaseIdentityModel):
-
     def __init__(self, href=None, type_=None, rel=None):
         '''
         Models a link object returned by keystone
@@ -119,8 +112,8 @@ class Link(BaseIdentityModel):
 
     @classmethod
     def _dict_to_obj(cls, json_dict):
-        link = Link(href=json_dict.get('href'), 
-                    type_=json_dict.get('type'), 
+        link = Link(href=json_dict.get('href'),
+                    type_=json_dict.get('type'),
                     rel=json_dict.get('rel'))
 
         return link
